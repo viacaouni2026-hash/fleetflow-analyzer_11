@@ -1,0 +1,366 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "leaflet/dist/leaflet.css";
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark-neon, .dark-neon *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-slate-50 rounded-full;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+  }
+
+  .bg-brand {
+    background-color: var(--brand-color);
+  }
+  .text-brand {
+    color: var(--brand-color);
+  }
+  .border-brand {
+    border-color: var(--brand-color);
+  }
+  .bg-brand-light {
+    background-color: var(--brand-color-light);
+  }
+}
+
+/* ==========================================================================
+   DARK NEON GLOBAL STYLES & OVERRIDES
+   ========================================================================== */
+
+html.dark-neon {
+  color-scheme: dark;
+}
+
+html.dark-neon,
+html.dark-neon body,
+html.dark-neon .min-h-screen {
+  background-color: #05070f !important;
+  color: #e2e8f0 !important;
+}
+
+/* Scrollbars in dark neon */
+html.dark-neon .custom-scrollbar::-webkit-scrollbar-track {
+  background: #080c18 !important;
+}
+html.dark-neon .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #1e293b !important;
+}
+html.dark-neon .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-color, #7c3aed) !important;
+}
+
+/* Main layouts and cards override */
+html.dark-neon .bg-white,
+html.dark-neon .bg-slate-50,
+html.dark-neon .bg-gray-50,
+html.dark-neon .bg-slate-100\/50,
+html.dark-neon .bg-slate-50\/50,
+html.dark-neon .bg-slate-50\/30,
+html.dark-neon .bg-slate-50\/20,
+html.dark-neon .bg-slate-100 {
+  background-color: #0b0f19 !important;
+  border-color: #172033 !important;
+}
+
+/* Sidebar Specific Layout */
+html.dark-neon aside,
+html.dark-neon .bg-white.border-r {
+  background-color: #070a13 !important;
+  border-color: #141b2b !important;
+}
+
+/* Standard Border Overrides */
+html.dark-neon .border-slate-100,
+html.dark-neon .border-slate-200,
+html.dark-neon .border-gray-100,
+html.dark-neon .border-gray-200,
+html.dark-neon .border-slate-100\/80,
+html.dark-neon .border-slate-200\/60,
+html.dark-neon .border-slate-100\/60,
+html.dark-neon .border-slate-200\/80,
+html.dark-neon .border-slate-300\/50,
+html.dark-neon .border-slate-300\/30,
+html.dark-neon .border-slate-200\/40,
+html.dark-neon .border-slate-100\/40 {
+  border-color: #172033 !important;
+}
+
+/* Brand backgrounds and custom neon highlight */
+html.dark-neon .bg-brand-light {
+  background-color: rgba(139, 92, 246, 0.15) !important;
+  box-shadow: inset 0 0 10px rgba(139, 92, 246, 0.25) !important;
+}
+
+/* Hover background adjustments */
+html.dark-neon .hover\:bg-slate-50:hover,
+html.dark-neon .hover\:bg-slate-100:hover,
+html.dark-neon .hover\:bg-slate-100\/50:hover,
+html.dark-neon .hover\:bg-gray-50:hover,
+html.dark-neon .hover\:bg-slate-50\/50:hover {
+  background-color: #111827 !important;
+}
+
+/* Cards and bento grid layouts */
+html.dark-neon .rounded-3xl,
+html.dark-neon .rounded-2xl,
+html.dark-neon .rounded-xl {
+  background-color: #0b0f19 !important;
+  border: 1px solid #172033 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark-neon .rounded-3xl:hover,
+html.dark-neon .rounded-2xl:hover,
+html.dark-neon .rounded-xl:hover {
+  border-color: rgba(139, 92, 246, 0.4) !important;
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.15), 0 4px 25px rgba(0, 0, 0, 0.6) !important;
+  transition: all 0.3s ease;
+}
+
+/* Inputs, Selects, and Textareas */
+html.dark-neon input,
+html.dark-neon select,
+html.dark-neon textarea {
+  background-color: #070a13 !important;
+  border-color: #1c263c !important;
+  color: #f1f5f9 !important;
+}
+
+html.dark-neon input::placeholder,
+html.dark-neon textarea::placeholder {
+  color: #4b5563 !important;
+}
+
+html.dark-neon input:focus,
+html.dark-neon select:focus,
+html.dark-neon textarea:focus {
+  border-color: #38bdf8 !important; /* neon cyan focus */
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.4) !important;
+}
+
+/* Font and text color overrides */
+html.dark-neon .text-slate-900,
+html.dark-neon .text-slate-800,
+html.dark-neon .text-slate-700,
+html.dark-neon .text-gray-900,
+html.dark-neon .text-gray-800,
+html.dark-neon .text-gray-700,
+html.dark-neon .text-zinc-900,
+html.dark-neon .text-zinc-800,
+html.dark-neon .text-zinc-700 {
+  color: #f1f5f9 !important;
+}
+
+html.dark-neon .text-slate-600,
+html.dark-neon .text-slate-500,
+html.dark-neon .text-gray-600,
+html.dark-neon .text-gray-500,
+html.dark-neon .text-zinc-600,
+html.dark-neon .text-zinc-500 {
+  color: #94a3b8 !important;
+}
+
+html.dark-neon .text-slate-400,
+html.dark-neon .text-gray-400,
+html.dark-neon .text-zinc-400 {
+  color: #64748b !important;
+}
+
+/* Tables in dark-neon */
+html.dark-neon table {
+  color: #cbd5e1 !important;
+}
+
+html.dark-neon thead,
+html.dark-neon th {
+  background-color: #0e1424 !important;
+  color: #38bdf8 !important; /* neon cyan header */
+  border-bottom: 2px solid #1e293b !important;
+}
+
+html.dark-neon tr:nth-child(even) {
+  background-color: #080c16 !important;
+}
+
+html.dark-neon tr:nth-child(odd) {
+  background-color: #0b0f19 !important;
+}
+
+html.dark-neon td {
+  border-color: #151c2d !important;
+}
+
+html.dark-neon tr:hover td {
+  background-color: #121930 !important;
+  color: #38bdf8 !important;
+}
+
+/* Glowing text colors and status indicators */
+html.dark-neon .text-emerald-600,
+html.dark-neon .text-emerald-500 {
+  color: #00ff87 !important; /* hot neon green */
+  text-shadow: 0 0 6px rgba(0, 255, 135, 0.4);
+}
+
+html.dark-neon .text-violet-600,
+html.dark-neon .text-violet-500 {
+  color: #bf77ff !important; /* bright neon purple */
+  text-shadow: 0 0 6px rgba(191, 119, 255, 0.4);
+}
+
+html.dark-neon .text-blue-600,
+html.dark-neon .text-blue-500 {
+  color: #38bdf8 !important; /* electric cyan */
+  text-shadow: 0 0 6px rgba(56, 189, 248, 0.4);
+}
+
+html.dark-neon .text-amber-600,
+html.dark-neon .text-amber-500 {
+  color: #ffb000 !important; /* neon gold */
+  text-shadow: 0 0 6px rgba(255, 176, 0, 0.4);
+}
+
+html.dark-neon .text-red-600,
+html.dark-neon .text-red-500,
+html.dark-neon .text-rose-600,
+html.dark-neon .text-rose-500 {
+  color: #ff3366 !important; /* neon hot pink/red */
+  text-shadow: 0 0 6px rgba(255, 51, 102, 0.4);
+}
+
+/* Badge background color overrides */
+html.dark-neon .bg-emerald-50,
+html.dark-neon .bg-emerald-100\/40,
+html.dark-neon .bg-emerald-50\/20 {
+  background-color: rgba(0, 255, 135, 0.08) !important;
+  color: #00ff87 !important;
+  border: 1px solid rgba(0, 255, 135, 0.3) !important;
+}
+
+html.dark-neon .bg-violet-50,
+html.dark-neon .bg-violet-100\/40,
+html.dark-neon .bg-violet-50\/20,
+html.dark-neon .bg-violet-50\/40 {
+  background-color: rgba(191, 119, 255, 0.08) !important;
+  color: #bf77ff !important;
+  border: 1px solid rgba(191, 119, 255, 0.3) !important;
+}
+
+html.dark-neon .bg-blue-50,
+html.dark-neon .bg-blue-100\/40,
+html.dark-neon .bg-blue-50\/20 {
+  background-color: rgba(56, 189, 248, 0.08) !important;
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+}
+
+html.dark-neon .bg-amber-50,
+html.dark-neon .bg-amber-100\/40,
+html.dark-neon .bg-amber-50\/20 {
+  background-color: rgba(255, 176, 0, 0.08) !important;
+  color: #ffb000 !important;
+  border: 1px solid rgba(255, 176, 0, 0.3) !important;
+}
+
+html.dark-neon .bg-red-50,
+html.dark-neon .bg-red-100\/40,
+html.dark-neon .bg-rose-50,
+html.dark-neon .bg-rose-50\/20 {
+  background-color: rgba(255, 51, 102, 0.08) !important;
+  color: #ff3366 !important;
+  border: 1px solid rgba(255, 51, 102, 0.3) !important;
+}
+
+/* Overlay / Modal backgrounds */
+html.dark-neon .fixed.inset-0.bg-slate-900\/40 {
+  background-color: rgba(2, 4, 10, 0.8) !important;
+}
+
+/* Pre and code blocks */
+html.dark-neon pre,
+html.dark-neon code {
+  background-color: #05070e !important;
+  border-color: #172033 !important;
+  color: #38bdf8 !important;
+}
+
+/* ==========================================================================
+   PRINT & PDF EXPORT STYLES
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 8mm;
+  }
+
+  html, body, #root, .min-h-screen {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 10pt !important;
+    overflow: visible !important;
+  }
+
+  /* Hide interactive, navigation, headers, footers and floating buttons */
+  header, nav, aside,
+  .print\:hidden,
+  button,
+  input,
+  select,
+  .custom-cursor,
+  .no-print {
+    display: none !important;
+  }
+
+  .print\:block {
+    display: block !important;
+  }
+
+  .print\:flex {
+    display: flex !important;
+  }
+
+  /* Expand scrollable containers for complete printing */
+  .custom-scrollbar,
+  .overflow-y-auto,
+  .overflow-x-auto,
+  div[style*="overflow"] {
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  /* Card and table break protection */
+  .bg-white, .rounded-2xl, .rounded-3xl, table, tr, figure {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    box-shadow: none !important;
+    border: 1px solid #e2e8f0 !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  /* Preserve high-fidelity chart colors in print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+

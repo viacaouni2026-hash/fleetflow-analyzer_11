@@ -1,0 +1,8 @@
+{
+  "name": "FleetFlow Analyzer_11",
+  "description": "Responsive dashboard for real fuel consumption (KM/L) analysis, crossing fleet operations and fuel transaction data.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

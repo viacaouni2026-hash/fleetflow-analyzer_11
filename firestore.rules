@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() { return request.auth != null; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    
+    function isValidAppSetting(data) {
+      return data.keys().hasAll(['appName', 'updatedAt'])
+        && data.appName is string && data.appName.size() <= 64
+        && data.updatedAt == request.time
+        && (data.get('companyName', '') is string && data.get('companyName', '').size() <= 128)
+        && (data.get('primaryColor', '') is string && data.get('primaryColor', '').size() <= 128)
+        && (data.get('systemLogo', '') is string && data.get('systemLogo', '').size() <= 2048)
+        && (data.get('erpSystem', '') is string && data.get('erpSystem', '').size() <= 128)
+        && (data.get('kmUrl', '') is string && data.get('kmUrl', '').size() <= 2048)
+        && (data.get('combUrl', '') is string && data.get('combUrl', '').size() <= 2048)
+        && (data.get('veicUrl', '') is string && data.get('veicUrl', '').size() <= 2048)
+        && (data.get('geminiApiKey', '') is string && data.get('geminiApiKey', '').size() <= 256)
+        && (data.get('reportLogo', '') is string && data.get('reportLogo', '').size() <= 2048)
+        && (data.get('showLogoInReport', true) is bool)
+        && (data.get('logoSize', 80) is number && data.get('logoSize', 80) >= 10 && data.get('logoSize', 80) <= 1000)
+        && (data.get('lastValidSave', '') is string && data.get('lastValidSave', '').size() <= 4096);
+    }
+
+    function isValidFleetMapping(data) {
+      return data.keys().hasAll(['coringa', 'frota', 'sistema', 'updatedAt'])
+        && data.keys().size() == 4
+        && data.coringa is string && data.coringa.size() <= 64
+        && data.frota is string && data.frota.size() <= 64
+        && data.sistema is string && data.sistema.size() <= 64
+        && data.updatedAt == request.time;
+    }
+
+    match /settings/global {
+      allow read: if true;
+      allow write: if isSignedIn() && isValidAppSetting(incoming());
+    }
+
+    match /test/connection {
+      allow read: if true;
+    }
+
+    match /mappings/{mappingId} {
+      allow read: if true;
+      allow create, update: if isSignedIn() && isValidId(mappingId) && isValidFleetMapping(incoming());
+      allow delete: if isSignedIn();
+    }
+  }
+}

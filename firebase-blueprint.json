@@ -1,0 +1,64 @@
+{
+  "entities": {
+    "AppSetting": {
+      "title": "App Setting",
+      "description": "Global application settings and configurations.",
+      "type": "object",
+      "properties": {
+        "appName": { "type": "string" },
+        "companyName": { "type": "string" },
+        "primaryColor": { "type": "string" },
+        "systemLogo": { "type": "string" },
+        "erpSystem": { "type": "string" },
+        "kmUrl": { "type": "string" },
+        "combUrl": { "type": "string" },
+        "veicUrl": { "type": "string" },
+        "oneDriveUrl": { "type": "string" },
+        "estoqueUrl": { "type": "string" },
+        "nfAvulsoUrl": { "type": "string" },
+        "geminiApiKey": { "type": "string" },
+        "reportLogo": { "type": "string" },
+        "showLogoInReport": { "type": "boolean" },
+        "logoSize": { "type": "number" },
+        "lastValidSave": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "updatedBy": { "type": "string" }
+      },
+      "required": ["appName", "updatedAt"]
+    },
+    "FleetMapping": {
+      "title": "Fleet Mapping",
+      "description": "Custom vehicle mappings that override static defaults.",
+      "type": "object",
+      "properties": {
+        "coringa": { "type": "string" },
+        "frota": { "type": "string" },
+        "sistema": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["coringa", "frota", "sistema", "updatedAt"]
+    },
+    "ConnectionTest": {
+      "title": "Connection Test",
+      "description": "Diagnostic document to test server connectivity and latency.",
+      "type": "object",
+      "properties": {
+        "status": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "/settings/global": {
+      "schema": "AppSetting",
+      "description": "The shared global settings for the application."
+    },
+    "/test/connection": {
+      "schema": "ConnectionTest",
+      "description": "Diagnostic connection test path."
+    },
+    "/mappings/{mappingId}": {
+      "schema": "FleetMapping",
+      "description": "Custom coringa/frota mappings."
+    }
+  }
+}

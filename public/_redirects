@@ -1,0 +1,4 @@
+/api/proxy    /.netlify/functions/proxy    200
+/api/*        /index.html                  404
+/*            /index.html                  200
+
